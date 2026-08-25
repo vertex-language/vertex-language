@@ -21,21 +21,14 @@
 
 ### Overview
 
-Vertex is a compiled, statically-typed language targeting seven platforms
-from a single grammar: `windows`, `linux`, `darwin`, `wasm`, `android`, `js`,
-and freestanding. A `use` line at the top of a file declares its target —
-memory model, platform, runtime, and backend — and the compiler checks that
-declaration against the build.
+Vertex is a compiled, statically-typed language targeting seven platforms from a single grammar: `windows`, `linux`, `darwin`, `wasm`, `android`, `js`, and freestanding. A `namespace` block at the top of a file declares its target — memory model, platform, runtime, and backend — and the compiler checks that declaration against the build.
 
-Classes provide object-oriented structure with deterministic destructors.
-`kernel func` and `graph func` support GPU-accelerated code, lowering to PTX,
-MSL, or StableHLO depending on backend. Control flow, generics, enums, and
-tuples follow familiar syntax from C-family and TypeScript-family languages.
+Classes provide object-oriented structure with deterministic destructors. `kernel func` and `graph func` support GPU-accelerated code, lowering to PTX, MSL, or StableHLO depending on backend. Control flow, generics, enums, and tuples follow familiar syntax from C-family and TypeScript-family languages.
 
 ```vertex
-namespace math
+package math
 
-export func fib(n: int): int {
+export func fib(n: int) -> int {
   if n <= 1 {
     return n
   }
@@ -51,36 +44,31 @@ export func fib(n: int): int {
   }
   return b
 }
+
 ```
 
 ### Platforms
 
 | Native | Host |
-|---|---|
+| --- | --- |
 | `windows` · `linux` · `darwin` · `wasm` | `android` · `js` |
-| pointer family, manual memory, layout control, destructors | runtime-managed memory, foreign object graph access |
+| pointer family (`*const T` / `*mut T`), manual memory, layout control, destructors | runtime-managed memory, foreign object graph access |
 
 ### Language features
 
-- Static types with explicit numeric conversions (no implicit widening or
-  narrowing)
-- Object-oriented `class` with ARC and deterministic destructors; `struct`
-  for value types
-- Generics, including const generics
-- `kernel func` / `graph func` for accelerated (CUDA, Metal, StableHLO) code
-- Union-based absence (`T | null`) and return-type failure handling, no
-  exceptions
-- Foreign function interface for C, C++, Objective-C, JVM, and JS
+* Static types with explicit numeric conversions (no implicit widening or narrowing)
+* Object-oriented `class` with ARC and deterministic destructors; `struct` for value types
+* Generics using square brackets (`[T]`), including const generics
+* `kernel func` / `graph func` for accelerated (CUDA, Metal, StableHLO) code
+* Optional-based absence (`T?` and `if let`) and return-type failure handling, no exceptions
+* Foreign function interface via `declare package` for C, C++, Objective-C, JVM, and JS
 
 ### Get started
 
 ```sh
-GOPROXY=direct go install github.com/vertex-language/vertex@latest
+GOPROXY=direct go install [github.com/vertex-language/vertex@latest](https://github.com/vertex-language/vertex@latest)
 vertex run main.vs
+
 ```
 
 Full grammar and language tour: [github.com/vertex-language/vertex](https://github.com/vertex-language/vertex#readme)
-
----
-
-<p align="center"><sub>Vertex · Language Spec 2.2 · Compiler 0.4.0</sub></p>
