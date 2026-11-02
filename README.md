@@ -10,27 +10,7 @@ installed beside it.
 [Specification](https://github.com/vertex-language/vsc/blob/main/docs/vertex_spec.md) ·
 [Editor support](https://github.com/vertex-language/vscode-vertex)
 
-```
-package main
-
-struct Point {
-    var X: float64
-    var Y: float64
-}
-
-func (p: borrowing Point) Length() -> float64 {
-    return (p.X * p.X + p.Y * p.Y).squareRoot()
-}
-
-func (p: inout Point) Scale(by factor: float64) {
-    p.X *= factor
-    p.Y *= factor
-}
-
-var p = Point(X: 3, Y: 4)
-p.Scale(by: 2)
-print(p.Length())    // 10.0
-```
+<img src="docs/assets/snippets/snippet-01.png" alt="A Vertex program: a Point struct, a borrowing Length method, an inout Scale method, and a call printing 10.0" width="100%">
 
 ## Getting started
 
@@ -47,10 +27,7 @@ cd vsc/cmd && go build -o ~/bin/vsc ./vsc
 
 A program can be a single file:
 
-```
-let name = "world"
-print("Hello, \(name)!")
-```
+<img src="docs/assets/snippets/snippet-02.png" alt="Hello world: let name = &quot;world&quot;; print(&quot;Hello, \(name)!&quot;)" width="100%">
 
 ```
 vsc run hello.vs
@@ -63,33 +40,12 @@ vsc build -o hello hello.vs
 
 Types are written in lowercase, and collections are built in.
 
-```
-let ok: bool = true
-let count: int = 42
-let ratio: float64 = 0.5
-let title: string = "Vertex"
-let tags: [string] = ["a", "b"]
-let ages: [string: int] = ["ada": 36]
-```
+<img src="docs/assets/snippets/snippet-03.png" alt="Values: bool, int, float64, string, an array and a dictionary" width="100%">
 
 Structs are values, classes are references, and enums carry data and are matched
 exhaustively.
 
-```
-enum Shape {
-    case circle(radius: float64)
-    case rect(width: float64, height: float64)
-}
-
-func Area(shape: Shape) -> float64 {
-    switch shape {
-    case .circle(let r):
-        return 3.14159 * r * r
-    case .rect(let w, let h):
-        return w * h
-    }
-}
-```
+<img src="docs/assets/snippets/snippet-04.png" alt="An enum Shape with circle and rect cases, matched in a switch" width="100%">
 
 ### Methods
 
@@ -97,99 +53,28 @@ A method can be written beside a type or apart from it. Written apart, it says
 how it holds its receiver: `borrowing` to read, `inout` to change, `consuming`
 to take.
 
-```
-func (p: borrowing Point) Length() -> float64 {
-    return (p.X * p.X + p.Y * p.Y).squareRoot()
-}
-
-func (p: inout Point) Scale(by factor: float64) {
-    p.X *= factor
-    p.Y *= factor
-}
-```
+<img src="docs/assets/snippets/snippet-05.png" alt="Receiver methods: borrowing Length and inout Scale on Point" width="100%">
 
 ### Calls
 
 A parameter is named once. A call may pass its arguments by name or in order.
 
-```
-func Area(width: float64, height: float64) -> float64 {
-    return width * height
-}
-
-Area(width: 3, height: 4)
-Area(3, 4)
-```
+<img src="docs/assets/snippets/snippet-06.png" alt="A function Area(width:height:) called by name and in order" width="100%">
 
 ### Protocols and generics
 
-```
-protocol Shape {
-    func Area() -> float64
-}
-
-struct Square: Shape {
-    var Side: float64
-    func Area() -> float64 { return Side * Side }
-}
-
-func Largest<T: Shape>(shapes: [T]) -> float64 {
-    var best = 0.0
-    for s in shapes {
-        best = max(best, s.Area())
-    }
-    return best
-}
-```
+<img src="docs/assets/snippets/snippet-07.png" alt="A protocol Shape, a conforming Square, and a generic Largest function" width="100%">
 
 ### Errors
 
-```
-enum ParseError: Error {
-    case empty
-    case notANumber(text: string)
-}
-
-func ParseInt(text: string) throws -> int {
-    if text.isEmpty {
-        throw ParseError.empty
-    }
-    guard let n = int(text) else {
-        throw ParseError.notANumber(text: text)
-    }
-    return n
-}
-
-do {
-    print(try ParseInt("42"))
-} catch {
-    print("could not parse: \(error)")
-}
-```
+<img src="docs/assets/snippets/snippet-08.png" alt="Errors: a ParseError enum, a throwing ParseInt, and do/catch" width="100%">
 
 ### Concurrency
 
 Tasks run with `async` and `await`, side by side with `async let`, and actors
 keep their state to themselves.
 
-```
-func Fetch(id: int) async -> int {
-    return id * 10
-}
-
-async let a = Fetch(1)
-async let b = Fetch(2)
-print(await a + await b)
-
-actor Counter {
-    var count = 0
-
-    func Next() -> int {
-        count += 1
-        return count
-    }
-}
-```
+<img src="docs/assets/snippets/snippet-09.png" alt="Concurrency: async let for two fetches, and an actor Counter" width="100%">
 
 ## Packages
 
@@ -211,15 +96,7 @@ module example.com/hello
 vertex 0.9
 ```
 
-```
-package main
-
-import "example.com/hello/geometry"
-
-let a = geometry.Point(0, 0)
-let b = geometry.Point(3, 4)
-print(geometry.Distance(a, b))
-```
+<img src="docs/assets/snippets/snippet-10.png" alt="A main package importing example.com/hello/geometry and printing a distance" width="100%">
 
 ```
 vsc run ./cmd/hello
@@ -228,10 +105,7 @@ vsc run ./cmd/hello
 The standard library is a set of packages, each in its own repository under
 [vertex-language](https://github.com/vertex-language), imported by name:
 
-```
-import "fs"
-import "net/http"
-```
+<img src="docs/assets/snippets/snippet-11.png" alt="Importing standard packages: import &quot;fs&quot; and import &quot;net/http&quot;" width="100%">
 
 ## Repositories
 
